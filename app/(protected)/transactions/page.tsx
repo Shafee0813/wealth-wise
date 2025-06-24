@@ -1,9 +1,11 @@
+import { connectToDB } from "@/lib/dbConnect"
 
-const page = () => {
+const page = async () => {
+  await connectToDB()
     return (
-      <div className="flex">transactions
-      lorem*50</div>
+      <div className="flex">
+      </div>
     )
-  }
+}
   
-  export default page
+export default page

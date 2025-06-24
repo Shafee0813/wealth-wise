@@ -119,6 +119,15 @@
   body {
     @apply bg-background text-foreground;
   }
+  .smaller-text {
+    @apply max-sm:text-base max-md:text-lg text-xl; 
+  }
+  .regular-text{
+    @apply max-sm:text-base max-md:text-xl text-2xl;
+  }
+  .heading-text{
+    @apply max-sm:text-xl max-md:text-3xl text-3xl;
+  }
 }
 
 body {

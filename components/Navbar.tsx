@@ -1,7 +1,8 @@
 "use client"
 import { SignedIn, SignedOut, UserButton } from "@clerk/nextjs"
 import Logo from "./Logo"
-import { redirect } from "next/navigation"
+import { Button } from "./ui/button"
+import Link from "next/link"
 
 const Navbar = () => {
   return (
@@ -14,9 +15,9 @@ const Navbar = () => {
                 </div>
             </SignedIn>
             <SignedOut>
-                <button className=" px-4 py-2 rounded-md bg-emerald-800 z-50 cursor-pointer hover:bg-emerald-100" onClick={() => {redirect("/sign-in")}}>
-                    Sign in
-                </button>
+                <Button className="hover:bg-neutral-800 hover:text-white" variant="ghost" asChild>
+                    <Link href="/sign-in">Sign in</Link>
+                </Button>
             </SignedOut>
         </nav>
         
