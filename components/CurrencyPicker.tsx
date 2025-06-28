@@ -3,7 +3,6 @@
 import * as React from "react"
 
 import { useMediaQuery } from "@/hooks/use-media-query"
-import { Button } from "@/components/ui/button"
 import {
   Command,
   CommandEmpty,
@@ -36,13 +35,13 @@ export default function CurrencyPicker() {
     return (
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>
-          <button className="w-[180px] justify-start bg-neutral-800 text-white hover:bg-neutral-700 p-2 rounded-md ">
+          <button className="w-[250px] justify-start bg-neutral-800 text-white hover:bg-neutral-700 p-2 rounded-md ">
             {selectedCurrency
               ? <>{selectedCurrency.symbol} {selectedCurrency.name}</>
               : <>Set currency</>}
           </button>
         </PopoverTrigger>
-        <PopoverContent className="w-[220px] p-0 bg-black text-white" align="start">
+        <PopoverContent className="w-[250px] p-0 bg-black text-white" align="start">
           <CurrencyList setOpen={setOpen} setSelectedCurrency={setSelectedCurrency} />
         </PopoverContent>
       </Popover>
@@ -50,16 +49,16 @@ export default function CurrencyPicker() {
   }
 
   return (
-    <Drawer open={open} onOpenChange={setOpen}>
+    <Drawer open={open} onOpenChange={setOpen} >
         <DrawerTitle></DrawerTitle>
       <DrawerTrigger asChild>
-        <Button variant="outline" className="w-[180px] justify-start bg-black text-white border-white">
+        <button className="w-[250px] justify-start  bg-neutral-800 text-white hover:bg-neutral-700 p-2 rounded-md">
           {selectedCurrency
             ? <>{selectedCurrency.symbol} {selectedCurrency.name}</>
-            : <>+ Set currency</>}
-        </Button>
+            : <>Set currency</>}
+        </button>
       </DrawerTrigger>
-      <DrawerContent>
+      <DrawerContent className="bg-black border-none">
         <div className="mt-4 border-t border-white bg-black text-white">
           <CurrencyList setOpen={setOpen} setSelectedCurrency={setSelectedCurrency} />
         </div>
@@ -76,7 +75,7 @@ function CurrencyList({
   setSelectedCurrency: (currency: Currency | null) => void
 }) {
   return (
-    <Command className="bg-black text-white">
+    <Command className="bg-neutral-800 text-white">
       <CommandInput placeholder="Filter currency..." className="placeholder:text-white" />
       <CommandList>
         <CommandEmpty>No results found.</CommandEmpty>
@@ -85,13 +84,20 @@ function CurrencyList({
             <CommandItem
               key={currency.code}
               value={currency.code}
-              onSelect={(value) => {
-                setSelectedCurrency(
-                  currencies.find((cur) => cur.code === value) || null
-                )
-                setOpen(false)
+              onSelect={async (value) => {
+                const selected = currencies.find((cur) => cur.code === value) || null;
+                setSelectedCurrency(selected);
+                setOpen(false);
+              
+                if (selected) {
+                  await fetch("/api/update-currency", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ currency: selected.code }),
+                  });
+                }
               }}
-              className="text-white data-[selected=true]:bg-white data-[selected=true]:text-black"
+              className="text-white data-[selected=true]:bg-neutral-700 data-[selected=true]:text-white"
             >
               {currency.symbol}&nbsp;&nbsp;{currency.name}
             </CommandItem>

@@ -133,3 +133,7 @@
 body {
   @apply bg-[#101010] text-[#FFFFFF];
 }
+
+@import "tailwindcss";
+ 
+@plugin "tailwindcss-motion";
